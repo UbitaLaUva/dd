@@ -3,10 +3,7 @@ const mysql = require("mysql");
 const cors = require("cors");
 
 const app = express();
-const port = 3000;
-
 app.use(cors());
-app.use(express.json());
 
 const db = mysql.createConnection({
   host: "193.203.166.109",
@@ -15,28 +12,14 @@ const db = mysql.createConnection({
   database: "u972882902_keySistem"
 });
 
-// Conectar a la base de datos
-db.connect(err => {
-  if (err) {
-    console.error("Error de conexión a la base de datos:", err);
-    return;
-  }
-  console.log("Conectado a la base de datos");
-});
+db.connect();
 
-app.get("/validate", (req, res) => { 
+app.get("/", (req, res) => {
   const { key } = req.query;
-
-  if (!key) {
-    return res.status(400).json({ valid: false, message: "Key requerida" });
-  }
-
   const sql = "SELECT * FROM keys WHERE key_value = ? AND expiration > NOW()";
+
   db.query(sql, [key], (err, result) => {
-    if (err) {
-      console.error("Error en la validación de la key:", err);
-      return res.status(500).json({ valid: false, message: err.message });
-    }
+    if (err) return res.status(500).json({ error: err });
     if (result.length > 0) {
       res.json({ valid: true });
     } else {
@@ -45,6 +28,4 @@ app.get("/validate", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
-});
+module.exports = app;

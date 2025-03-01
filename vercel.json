@@ -2,14 +2,23 @@
     "version": 2,
     "builds": [
       {
-        "src": "keySystem.js",
+        "src": "generate.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "validate.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "keySystem.js"
+        "src": "/generate",
+        "dest": "generate.js"
+      },
+      {
+        "src": "/validate",
+        "dest": "validate.js"
       }
     ]
   }
+  
