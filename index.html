@@ -43,20 +43,20 @@
 <p id="key">Aquí aparecerá la key...</p>
 
 <script>
-    function generateKey() {
-      fetch("https://keey-two.vercel.app/generate")
-        .then(response => response.json())
-        .then(data => {
-          if (data.key) {
+function generateKey() {
+    fetch("generate.js") // Cambia la URL si tienes otro dominio
+    .then(response => response.json())
+    .then(data => {
+        if (data.key) {
             document.getElementById("key").innerText = data.key;
-          } else {
+        } else {
             document.getElementById("key").innerText = "Error al generar la Key";
-          }
-        })
-        .catch(() => {
-          document.getElementById("key").innerText = "Error de conexión con el servidor";
-        });
-    }
-    </script>
+        }
+    })
+    .catch(error => {
+        document.getElementById("key").innerText = "Error de conexión con el servidor";
+    });
+}
+</script>
 </body>
 </html>

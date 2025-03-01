@@ -3,7 +3,9 @@ const mysql = require("mysql");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
+app.use(express.json());
 
 const db = mysql.createConnection({
   host: "193.203.166.109",
@@ -12,14 +14,28 @@ const db = mysql.createConnection({
   database: "u972882902_keySistem"
 });
 
-db.connect();
+// Conectar a la base de datos
+db.connect(err => {
+  if (err) {
+    console.error("Error de conexión a la base de datos:", err);
+    return;
+  }
+  console.log("Conectado a la base de datos");
+});
 
-app.get("/", (req, res) => {
+app.get("/validate", (req, res) => { 
   const { key } = req.query;
-  const sql = "SELECT * FROM keys WHERE key_value = ? AND expiration > NOW()";
 
+  if (!key) {
+    return res.status(400).json({ valid: false, message: "Key requerida" });
+  }
+
+  const sql = "SELECT * FROM keys WHERE key_value = ? AND expiration > NOW()";
   db.query(sql, [key], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) {
+      console.error("Error en la validación de la key:", err);
+      return res.status(500).json({ valid: false, message: err.message });
+    }
     if (result.length > 0) {
       res.json({ valid: true });
     } else {
@@ -28,4 +44,3 @@ app.get("/", (req, res) => {
   });
 });
 
-module.exports = app;
