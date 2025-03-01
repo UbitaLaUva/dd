@@ -44,7 +44,7 @@
 
 <script>
     function generateKey() {
-      fetch("https://keey-two.vercel.app/generate")
+      fetch("/generate")
         .then(response => response.json())
         .then(data => {
           if (data.key) {
@@ -54,9 +54,10 @@
           }
         })
         .catch(() => {
-          document.getElementById("key").innerText = "Error de conexión con el servidor";
+          document.getElementById("key").innerText = "Error de conexión";
         });
     }
-    </script>
+  </script>
+  
 </body>
 </html>

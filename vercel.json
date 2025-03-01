@@ -2,23 +2,26 @@
     "version": 2,
     "builds": [
       {
-        "src": "generate.js",
+        "src": "api/*.js",
         "use": "@vercel/node"
       },
       {
-        "src": "validate.js",
-        "use": "@vercel/node"
+        "src": "index.html",
+        "use": "@vercel/static"
       }
     ],
     "routes": [
       {
         "src": "/generate",
-        "dest": "generate.js"
+        "dest": "/api/generate.js"
       },
       {
         "src": "/validate",
-        "dest": "validate.js"
+        "dest": "/api/validate.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
       }
     ]
   }
-  
