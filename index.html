@@ -44,7 +44,7 @@
 
 <script>
     function generateKey() {
-      fetch("/generate")
+      fetch("api\generate.js")
         .then(response => response.json())
         .then(data => {
           if (data.key) {
