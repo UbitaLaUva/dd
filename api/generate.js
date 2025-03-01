@@ -7,11 +7,12 @@ const app = express();
 app.use(cors());
 
 const db = mysql.createConnection({
-  host: "193.203.166.109",
-  user: "u972882902_2B8UOLu7hm8V",
-  password: "kU]9=@a#",
-  database: "u972882902_keySistem"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
+
 
 db.connect();
 
